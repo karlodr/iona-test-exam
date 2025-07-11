@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useState, useMemo, useCallback, useRef } from "react";
+import { FC, useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { ProductCard } from "@/app/components/product-card";
 import { Pagination } from "@/app/components/pagination";
 import { SortSidebar } from "../components/sort-sidebar";
@@ -8,6 +8,8 @@ import { HeaderWithSearch } from "@/app/components/header";
 import { Product } from "@/app/lib/types";
 
 import { ProductAPI } from "@/app/lib/api/product";
+
+const PAGE_SIZE = 21;
 
 const debounce = <T extends unknown[]>(func: (...args: T) => void, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -28,11 +30,40 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 	const [isSearching, setIsSearching] = useState(false);
 	const [searchError, setSearchError] = useState<string | null>(null);
 
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [paginatedProducts, setPaginatedProducts] = useState<Product[]>(products);
+	const [totalProducts, setTotalProducts] = useState<number>(products.length);
+
+	// For search pagination
+	const [searchTotal, setSearchTotal] = useState<number>(0);
+
+	// Fetch paginated products when not searching
+	useEffect(() => {
+		if (searchValue.trim() !== "") return; // Don't fetch if searching
+		const fetchPaginated = async () => {
+			setIsSearching(true);
+			setSearchError(null);
+			try {
+				const skip = (currentPage - 1) * PAGE_SIZE;
+				const res = await ProductAPI.getPaginated(skip, PAGE_SIZE);
+				setPaginatedProducts(res.products);
+				setTotalProducts(res.total);
+			} catch {
+				setSearchError("Failed to fetch products");
+				setPaginatedProducts([]);
+			} finally {
+				setIsSearching(false);
+			}
+		};
+		fetchPaginated();
+	}, [currentPage, searchValue]);
+
 	const performSearch = useCallback(
-		async (value: string) => {
+		async (value: string, page: number = 1) => {
 			if (value.trim() === "") {
 				setSearchResults(null);
 				setSearchError(null);
+				setSearchTotal(0);
 				return;
 			}
 
@@ -40,11 +71,14 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 			setSearchError(null);
 
 			try {
-				const res = await ProductAPI.search(value);
+				const skip = (page - 1) * PAGE_SIZE;
+				const res = await ProductAPI.search(value, { skip, limit: PAGE_SIZE });
 				setSearchResults(res.products);
+				setSearchTotal(res.total);
 			} catch {
 				setSearchError("Failed to search products");
 				setSearchResults([]);
+				setSearchTotal(0);
 			} finally {
 				setIsSearching(false);
 			}
@@ -53,8 +87,8 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 	);
 
 	const debouncedSearch = useRef(
-		debounce((value: string) => {
-			performSearch(value);
+		debounce((value: string, page: number = 1) => {
+			performSearch(value, page);
 		}, 400)
 	).current;
 
@@ -62,13 +96,24 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const value = e.target.value;
 			setSearchValue(value);
-			debouncedSearch(value);
+			setCurrentPage(1);
+			debouncedSearch(value, 1);
 		},
 		[debouncedSearch]
 	);
 
+	// When currentPage changes and searching, fetch new search page
+	useEffect(() => {
+		if (searchValue.trim() === "") return;
+		performSearch(searchValue, currentPage);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentPage]);
+
 	const sortedProducts = useMemo(() => {
-		const list = searchResults !== null ? searchResults : products;
+		const list =
+			searchValue.trim() !== ""
+				? searchResults ?? []
+				: paginatedProducts ?? [];
 		const sorted = [...list].sort((a, b) => {
 			let aValue: string | number = "";
 			let bValue: string | number = "";
@@ -89,7 +134,7 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 			return 0;
 		});
 		return sorted;
-	}, [products, searchResults, sortKey, sortOrder]);
+	}, [paginatedProducts, searchResults, products, searchValue, sortKey, sortOrder]);
 
 	const handleSortKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSortKey(e.target.value as SortKey);
@@ -99,7 +144,24 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 		setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
 	};
 
-	const shouldShowPagination = sortedProducts.length > 0;
+	const shouldShowPagination =
+		(searchValue.trim() !== ""
+			? (searchResults?.length ?? 0)
+			: (paginatedProducts?.length ?? 0)) > 0;
+
+	const totalPages = useMemo(() => {
+		if (searchValue.trim() !== "") {
+			return Math.ceil(searchTotal / PAGE_SIZE) || 1;
+		}
+		return Math.ceil(totalProducts / PAGE_SIZE) || 1;
+	}, [searchValue, searchTotal, totalProducts]);
+
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+		if (searchValue.trim() !== "") {
+			debouncedSearch(searchValue, page);
+		}
+	};
 
 	return (
 		<main className="w-full h-min-screen">
@@ -153,7 +215,11 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 								</div>
 
 								{shouldShowPagination && (
-									<Pagination totalPages={10} currentPage={1} onPageChange={() => { }} />
+									<Pagination
+										totalPages={totalPages}
+										currentPage={currentPage}
+										onPageChange={handlePageChange}
+									/>
 								)}
 							</>
 						)}
