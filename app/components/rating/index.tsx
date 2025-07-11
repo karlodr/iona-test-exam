@@ -13,26 +13,41 @@ export const Rating: FC<RatingProps> = ({ ratings, className = "" }) => {
     if (rating >= i + 1) {
       // Full star
       stars.push(
-        <span key={i} className="text-yellow-400 text-xl" aria-label="Full star">
+        <span
+          key={i}
+          className="text-yellow-400 text-xl"
+          aria-label="Full star"
+        >
           &#9733;
-        </span>
+        </span>,
       );
     } else if (rating >= i + 0.5) {
       // Half star
       stars.push(
-        <span key={i} className="text-yellow-400 text-xl relative" aria-label="Half star">
-          <span style={{ position: "absolute", width: "50%", overflow: "hidden", display: "inline-block" }}>
+        <span
+          key={i}
+          className="text-yellow-400 text-xl relative"
+          aria-label="Half star"
+        >
+          <span
+            style={{
+              position: "absolute",
+              width: "50%",
+              overflow: "hidden",
+              display: "inline-block",
+            }}
+          >
             &#9733;
           </span>
           <span className="text-gray-300 text-xl">&#9733;</span>
-        </span>
+        </span>,
       );
     } else {
       // Empty star
       stars.push(
         <span key={i} className="text-gray-300 text-xl" aria-label="Empty star">
           &#9733;
-        </span>
+        </span>,
       );
     }
   }

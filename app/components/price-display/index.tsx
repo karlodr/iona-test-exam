@@ -5,8 +5,12 @@ type PriceDisplayProps = {
   discountPercentage: number;
 };
 
-export const PriceDisplay: FC<PriceDisplayProps> = ({ price, discountPercentage }) => {
-  if (typeof price !== "number" || typeof discountPercentage !== "number") return null;
+export const PriceDisplay: FC<PriceDisplayProps> = ({
+  price,
+  discountPercentage,
+}) => {
+  if (typeof price !== "number" || typeof discountPercentage !== "number")
+    return null;
 
   const discountAmount = price * (discountPercentage / 100);
   const discountedPrice = price - discountAmount;

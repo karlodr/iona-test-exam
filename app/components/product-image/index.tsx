@@ -6,7 +6,10 @@ type ProductImageProps = {
   alt?: string;
 };
 
-export const ProductImage: FC<ProductImageProps> = ({ src, alt = "product" }) => (
+export const ProductImage: FC<ProductImageProps> = ({
+  src,
+  alt = "product",
+}) => (
   <div className="relative h-full flex items-center justify-center overflow-hidden">
     <div
       className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 z-0"
@@ -19,7 +22,7 @@ export const ProductImage: FC<ProductImageProps> = ({ src, alt = "product" }) =>
       }}
       aria-hidden="true"
     />
-    
+
     <Image
       src={src}
       alt={alt}

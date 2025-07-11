@@ -1,7 +1,6 @@
 import { View } from "./index";
 import { ProductAPI } from "@/app/lib/api/product";
 
-
 type PageProps = {
   params: { id: string };
 };

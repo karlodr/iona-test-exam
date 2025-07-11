@@ -11,9 +11,10 @@ function isValidPositiveInt(value: number): boolean {
 }
 
 export const ProductAPI = {
-  async getAll(
-    { skip = DEFAULT_SKIP, limit = DEFAULT_LIMIT }: { skip?: number; limit?: number } = {}
-  ): Promise<ProductListResponse> {
+  async getAll({
+    skip = DEFAULT_SKIP,
+    limit = DEFAULT_LIMIT,
+  }: { skip?: number; limit?: number } = {}): Promise<ProductListResponse> {
     if (!isValidPositiveInt(skip) || !isValidPositiveInt(limit)) {
       throw new Error("Invalid skip or limit parameter");
     }
@@ -33,7 +34,10 @@ export const ProductAPI = {
 
   async search(
     query: string,
-    { skip = DEFAULT_SKIP, limit = DEFAULT_LIMIT }: { skip?: number; limit?: number } = {}
+    {
+      skip = DEFAULT_SKIP,
+      limit = DEFAULT_LIMIT,
+    }: { skip?: number; limit?: number } = {},
   ): Promise<ProductListResponse> {
     if (typeof query !== "string" || !query.trim()) {
       throw new Error("Query must be a non-empty string");
@@ -49,7 +53,10 @@ export const ProductAPI = {
 
   async getByCategory(
     category: string,
-    { skip = DEFAULT_SKIP, limit = DEFAULT_LIMIT }: { skip?: number; limit?: number } = {}
+    {
+      skip = DEFAULT_SKIP,
+      limit = DEFAULT_LIMIT,
+    }: { skip?: number; limit?: number } = {},
   ): Promise<ProductListResponse> {
     if (typeof category !== "string" || !category.trim()) {
       throw new Error("Category must be a non-empty string");
@@ -59,11 +66,15 @@ export const ProductAPI = {
     }
     const url = `${BASE_URL}/category/${encodeURIComponent(category)}?skip=${skip}&limit=${limit}`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch products for category ${category}`);
+    if (!res.ok)
+      throw new Error(`Failed to fetch products for category ${category}`);
     return res.json();
   },
 
-  async getPaginated(skip: number, limit: number): Promise<ProductListResponse> {
+  async getPaginated(
+    skip: number,
+    limit: number,
+  ): Promise<ProductListResponse> {
     if (!isValidPositiveInt(skip) || !isValidPositiveInt(limit)) {
       throw new Error("Invalid skip or limit parameter");
     }

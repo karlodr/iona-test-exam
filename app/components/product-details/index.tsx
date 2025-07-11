@@ -24,13 +24,16 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   returnPolicy,
 }) => (
   <div className="mb-8">
-    <h3 className="text-lg font-semibold mb-2 text-gray-800">Product Details</h3>
+    <h3 className="text-lg font-semibold mb-2 text-gray-800">
+      Product Details
+    </h3>
     <ul className="text-gray-700 text-sm space-y-1">
       <li>
         <span className="font-medium">Weight:</span> {weight} kg
       </li>
       <li>
-        <span className="font-medium">Dimensions:</span> {dimensions.width} x {dimensions.height} x {dimensions.depth} cm
+        <span className="font-medium">Dimensions:</span> {dimensions.width} x{" "}
+        {dimensions.height} x {dimensions.depth} cm
       </li>
       <li>
         <span className="font-medium">Warranty:</span> {warrantyInformation}
@@ -40,7 +43,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({
       </li>
       <li>
         <span className="font-medium">Availability:</span>{" "}
-        <span className="text-green-600 font-semibold">{availabilityStatus}</span>
+        <span className="text-green-600 font-semibold">
+          {availabilityStatus}
+        </span>
       </li>
       <li>
         <span className="font-medium">Return Policy:</span> {returnPolicy}
@@ -49,4 +54,4 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   </div>
 );
 
-export {ProductDetails};
+export { ProductDetails };

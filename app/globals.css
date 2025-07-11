@@ -4,7 +4,7 @@
 @theme {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
-  
+
   --color-primary: var(--color-primary);
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
@@ -15,11 +15,11 @@
   :root {
     --background: #2c283c;
     --foreground: #ccc6d0;
-  
+
     --color-primary: #812bb3;
-  
+
     --color-secondary: #000000;
-  
+
     --color-accent: ##e5e6f9;
     --color-accent-content: #ffffff;
   }

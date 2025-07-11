@@ -6,7 +6,11 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-function getPageNumbers(totalPages: number, currentPage: number, maxVisible: number = 5): number[] {
+function getPageNumbers(
+  totalPages: number,
+  currentPage: number,
+  maxVisible: number = 5,
+): number[] {
   if (totalPages <= maxVisible) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
@@ -23,7 +27,11 @@ function getPageNumbers(totalPages: number, currentPage: number, maxVisible: num
   return Array.from({ length: maxVisible }, (_, i) => start + i);
 }
 
-export const Pagination: FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+export const Pagination: FC<PaginationProps> = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+}) => {
   if (totalPages <= 1) return null;
 
   const pageNumbers = getPageNumbers(totalPages, currentPage);
@@ -60,11 +68,13 @@ export const Pagination: FC<PaginationProps> = ({ totalPages, currentPage, onPag
           >
             {page}
           </button>
-        ) : null
+        ) : null,
       )}
       {pageNumbers[pageNumbers.length - 1] < totalPages && (
         <>
-          {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <span className="px-2">...</span>}
+          {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
+            <span className="px-2">...</span>
+          )}
           <button
             className={`join-item btn btn-md${totalPages === currentPage ? " btn-active" : ""}`}
             onClick={() => onPageChange(totalPages)}

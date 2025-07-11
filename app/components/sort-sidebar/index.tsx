@@ -27,18 +27,14 @@ export const SortSidebar: FC<SortSidebarProps> = ({
           tabIndex={0}
           role="button"
           aria-label={`Toggle sort order, currently ${sortOrder === "asc" ? "ascending" : "descending"}`}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === " " || e.key === "Enter") {
               e.preventDefault();
               onToggleSortOrder();
             }
           }}
         >
-          {sortOrder === "asc" ? (
-            <span>&#8593;</span>
-          ) : (
-            <span>&#8595;</span>
-          )}
+          {sortOrder === "asc" ? <span>&#8593;</span> : <span>&#8595;</span>}
         </span>
       </div>
       <div className="flex flex-col gap-2">

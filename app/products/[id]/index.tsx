@@ -23,9 +23,7 @@ export const View: FC<ViewProps> = ({ product }) => {
         </div>
         <div className="grid grid-cols-2 h-full">
           <ProductImage src={product.thumbnail} alt={product.title} />
-          <ProductInfo
-            {...product}
-          />
+          <ProductInfo {...product} />
         </div>
       </div>
     </section>

@@ -28,14 +28,14 @@ export const CategorySidebar: FC<CategorySidebarProps> = ({
                 type="checkbox"
                 className="checkbox"
                 checked={checked}
-                onChange={e => onCategoryChange(category, e.target.checked)}
+                onChange={(e) => onCategoryChange(category, e.target.checked)}
                 id={`category-${index}`}
               />
               <label
                 htmlFor={`category-${index}`}
                 className="cursor-pointer"
                 tabIndex={0}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   if (e.key === " " || e.key === "Enter") {
                     e.preventDefault();
                     onCategoryChange(category, !checked);

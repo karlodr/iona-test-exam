@@ -1,4 +1,3 @@
-
 // For product listing page
 export type Product = {
   id: number;
