@@ -1,23 +1,47 @@
 import { FC } from "react";
 
 export type RatingProps = {
-  rating: number;
-  ratingCount?: number;
+  ratings: number;
   className?: string;
 };
 
-export const Rating: FC<RatingProps> = ({ rating, ratingCount, className = "" }) => (
-  <div className={`flex items-center ${className}`}>
-    {[...Array(5)].map((_, i) => (
-      <span
-        key={i}
-        className={i < Math.round(rating) ? "text-yellow-400 text-xl" : "text-gray-300 text-xl"}
-      >
-        &#9733;
-      </span>
-    ))}
-    <span className="ml-2 text-sm text-gray-500">
-      ({rating.toFixed(1)}/5{ratingCount ? `, ${ratingCount} reviews` : ""})
-    </span>
-  </div>
-);
+export const Rating: FC<RatingProps> = ({ ratings, className = "" }) => {
+  // Clamp ratings between 0 and 5
+  const rating = Math.max(0, Math.min(5, ratings));
+  const stars = [];
+
+  for (let i = 0; i < 5; i++) {
+    // For each star, determine if it should be full, half, or empty
+    // If rating >= i+1, full star
+    // If rating >= i+0.5, half star
+    // Else, empty star
+
+    if (rating >= i + 1) {
+      // Full star
+      stars.push(
+        <span key={i} className="text-yellow-400 text-xl" aria-label="Full star">
+          &#9733;
+        </span>
+      );
+    } else if (rating >= i + 0.5) {
+      // Half star
+      stars.push(
+        <span key={i} className="text-yellow-400 text-xl relative" aria-label="Half star">
+          <span style={{ position: "absolute", width: "50%", overflow: "hidden", display: "inline-block" }}>
+            &#9733;
+          </span>
+          <span className="text-gray-300 text-xl">&#9733;</span>
+        </span>
+      );
+    } else {
+      // Empty star
+      stars.push(
+        <span key={i} className="text-gray-300 text-xl" aria-label="Empty star">
+          &#9733;
+        </span>
+      );
+    }
+  }
+
+  return <div className={`flex items-center ${className}`}>{stars}</div>;
+};

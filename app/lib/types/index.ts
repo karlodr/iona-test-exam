@@ -19,4 +19,12 @@ export type Product = {
   shippingInformation: string;
   availabilityStatus: string;
   returnPolicy: string;
+  thumbnail: string;
+};
+
+export type ProductListResponse = {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
 };

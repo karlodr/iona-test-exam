@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ProductImage } from "@/app/components/product-image";
 import { ProductDetails } from "@/app/components/product-details";
-import { ProductInfo } from "@/app/products/[id]/product-info";
+import { ProductInfo } from "@/app/products/[id]/components/product-info";
 
 type ProductDetails = {
   id: number;

@@ -8,7 +8,7 @@ type CategorySidebarProps = {
 };
 
 export const CategorySidebar: FC<CategorySidebarProps> = ({
-    title,
+  title,
   categories,
   selectedCategories,
   onCategoryChange,
@@ -17,20 +17,36 @@ export const CategorySidebar: FC<CategorySidebarProps> = ({
     <div className="flex flex-col gap-y-2 border-r border-gray-200 pb-4">
       <h3 className="text-xs font-bold">{title}</h3>
       <div className="flex flex-col gap-y-2">
-        {categories.map((category, index) => (
-          <div key={category} className="flex items-center gap-x-2 text-sm">
-            <input
-              type="checkbox"
-              className="checkbox"
-              checked={selectedCategories.includes(category)}
-              onChange={e => onCategoryChange(category, e.target.checked)}
-              id={`category-${index}`}
-            />
-            <label className="label" htmlFor={`category-${index}`}>
-              {category}
-            </label>
-          </div>
-        ))}
+        {categories.map((category, index) => {
+          const checked = selectedCategories.includes(category);
+          return (
+            <div
+              key={category}
+              className="flex items-center gap-x-2 text-sm select-none"
+            >
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={checked}
+                onChange={e => onCategoryChange(category, e.target.checked)}
+                id={`category-${index}`}
+              />
+              <label
+                htmlFor={`category-${index}`}
+                className="cursor-pointer"
+                tabIndex={0}
+                onKeyDown={e => {
+                  if (e.key === " " || e.key === "Enter") {
+                    e.preventDefault();
+                    onCategoryChange(category, !checked);
+                  }
+                }}
+              >
+                {category}
+              </label>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

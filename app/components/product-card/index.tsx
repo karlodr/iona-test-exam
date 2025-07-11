@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { Image } from "@/app/components/image";
+import { Rating } from "@/app/components/rating";
 
 type ProductCardProps = {
 	id: number;
 	imageUrl: string;
 	title: string;
 	description: string;
-	ratings: number; // 0-5
+	ratings: number;
 	className?: string;
 };
 
@@ -32,13 +33,15 @@ export const ProductCard: FC<ProductCardProps> = ({
 			</figure>
 			<div className="card-body">
 				<h2 className="card-title">{title}</h2>
-				<p>{description}</p>
+				<p
+					title={description}
+					className="line-clamp-2 text-sm"
+					style={{ maxWidth: "100%" }}
+				>
+					{description}
+				</p>
 				<div className="flex items-center gap-2 mb-2">
-					{[...Array(5)].map((_, i) => (
-						<span key={i} className={i < ratings ? "text-yellow-400" : "text-gray-300"}>
-							&#9733;
-						</span>
-					))}
+					<Rating ratings={ratings} />
 					<span className="text-sm text-gray-500">({ratings}/5)</span>
 				</div>
 			</div>
