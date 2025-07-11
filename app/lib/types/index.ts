@@ -20,6 +20,7 @@ export type Product = {
   availabilityStatus: string;
   returnPolicy: string;
   thumbnail: string;
+  discountPercentage: number;
 };
 
 export type ProductListResponse = {

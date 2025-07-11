@@ -9,6 +9,8 @@ type ProductCardProps = {
 	title: string;
 	description: string;
 	ratings: number;
+	price: number;
+	discountPercentage: number;
 	className?: string;
 };
 
@@ -18,20 +20,49 @@ export const ProductCard: FC<ProductCardProps> = ({
 	title,
 	description,
 	ratings,
+	price,
+	discountPercentage,
 	className = "",
 }) => {
 	const router = useRouter();
 
 	const handleClick = (id: number) => {
 		router.push(`/products/${id}`);
-	}
+	};
 
 	return (
-		<div onClick={() => handleClick(id)} className={className || "card bg-base-100 w-full shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.01] cursor-pointer"}>
+		<div
+			onClick={() => handleClick(id)}
+			className={
+				className ||
+				"card bg-base-100 w-full shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.01] cursor-pointer"
+			}
+		>
 			<figure>
 				<Image src={imageUrl} alt={title} width={300} height={300} />
 			</figure>
 			<div className="card-body">
+				{typeof price === "number" && typeof discountPercentage === "number" ? (() => {
+					const discountAmount = price * (discountPercentage / 100);
+					const discountedPrice = price - discountAmount;
+					return (
+						<div className="flex items-baseline gap-2 mb-1">
+							<span className="text-lg font-bold text-green-600">
+								${discountedPrice.toFixed(2)}
+							</span>
+							{discountPercentage > 0 && (
+								<>
+									<span className="line-through text-gray-400 text-base">
+										${price.toFixed(2)}
+									</span>
+									<span className="bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">
+										-{discountPercentage.toFixed(0)}%
+									</span>
+								</>
+							)}
+						</div>
+					);
+				})() : null}
 				<h2 className="card-title">{title}</h2>
 				<p
 					title={description}

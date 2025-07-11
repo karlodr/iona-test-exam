@@ -74,6 +74,8 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 									title={product.title}
 									description={product.description}
 									ratings={product.rating}
+									price={product.price}
+									discountPercentage={product.discountPercentage}
 								/>
 							))}
 						</div>
