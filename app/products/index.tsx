@@ -167,7 +167,7 @@ export const View: FC<{ products: Product[] }> = ({ products }) => {
 		<main className="w-full h-min-screen">
 			<HeaderWithSearch
 				title="Product List page"
-				subtitle="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum, molestias."
+				subtitle="Browse our collection of products. Use the search and sorting options to find exactly what you need."
 				inputPlaceholder="Type a keyword"
 				inputValue={searchValue}
 				onInputChange={handleInputChange}

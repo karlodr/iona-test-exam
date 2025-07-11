@@ -6,16 +6,10 @@ export type RatingProps = {
 };
 
 export const Rating: FC<RatingProps> = ({ ratings, className = "" }) => {
-  // Clamp ratings between 0 and 5
   const rating = Math.max(0, Math.min(5, ratings));
   const stars = [];
 
   for (let i = 0; i < 5; i++) {
-    // For each star, determine if it should be full, half, or empty
-    // If rating >= i+1, full star
-    // If rating >= i+0.5, half star
-    // Else, empty star
-
     if (rating >= i + 1) {
       // Full star
       stars.push(
