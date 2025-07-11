@@ -25,7 +25,7 @@ export const ProductImage: FC<ProductImageProps> = ({ src, alt = "product" }) =>
       alt={alt}
       width={400}
       height={400}
-      className="relative z-10 max-h-[80%] max-w-[80%] rounded-lg shadow-lg"
+      className="relative z-10 max-h-[80%] max-w-[80%] rounded-lg shadow-lg bg-black/10"
       placeholder="blur"
       priority={false}
     />
