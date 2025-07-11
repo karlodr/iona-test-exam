@@ -1,14 +1,12 @@
 import { View } from "./index";
 import { ProductAPI } from "@/app/lib/api/product";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function Page(props: PageProps) {
-  const { id } = props.params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const product = await ProductAPI.getById(Number(id));
 
   if (!product) {
