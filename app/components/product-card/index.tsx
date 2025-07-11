@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { Image } from "@/app/components/image";
 import { Rating } from "@/app/components/rating";
+import { PriceDisplay } from "@/app/components/price-display";
 
 type ProductCardProps = {
 	id: number;
@@ -42,27 +43,7 @@ export const ProductCard: FC<ProductCardProps> = ({
 				<Image src={imageUrl} alt={title} width={300} height={300} />
 			</figure>
 			<div className="card-body">
-				{typeof price === "number" && typeof discountPercentage === "number" ? (() => {
-					const discountAmount = price * (discountPercentage / 100);
-					const discountedPrice = price - discountAmount;
-					return (
-						<div className="flex items-baseline gap-2 mb-1">
-							<span className="text-lg font-bold text-green-600">
-								${discountedPrice.toFixed(2)}
-							</span>
-							{discountPercentage > 0 && (
-								<>
-									<span className="line-through text-gray-400 text-base">
-										${price.toFixed(2)}
-									</span>
-									<span className="bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">
-										-{discountPercentage.toFixed(0)}%
-									</span>
-								</>
-							)}
-						</div>
-					);
-				})() : null}
+				<PriceDisplay price={price} discountPercentage={discountPercentage} />
 				<h2 className="card-title">{title}</h2>
 				<p
 					title={description}

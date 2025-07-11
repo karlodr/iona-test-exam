@@ -1,35 +1,17 @@
 import { FC } from "react";
+import type { Product } from "@/app/lib/types";
 import { Badge } from "@/app/components/badge";
 import { Rating } from "@/app/components/rating";
 import { ProductDetails } from "@/app/components/product-details";
+import { PriceDisplay } from "@/app/components/price-display";
 
-type Dimensions = {
-  width: number;
-  height: number;
-  depth: number;
-};
-
-type ProductInfoProps = {
-  title: string;
-  price: number;
-  category: string;
-  rating: number;
-  ratingCount: number;
-  description: string;
-  weight: number;
-  dimensions: Dimensions;
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  returnPolicy: string;
-};
+type ProductInfoProps = Product;
 
 export const ProductInfo: FC<ProductInfoProps> = ({
   title,
   price,
   category,
   rating,
-  ratingCount,
   description,
   weight,
   dimensions,
@@ -37,16 +19,17 @@ export const ProductInfo: FC<ProductInfoProps> = ({
   shippingInformation,
   availabilityStatus,
   returnPolicy,
+  discountPercentage,
 }) => (
   <div className="flex flex-col justify-between px-10 py-8 bg-white rounded-lg h-full">
     <div>
       <div>
         <Badge variant="primary" label={category} />
         <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
-        <p className="text-2xl text-primary font-semibold mb-6">${price.toFixed(2)}</p>
+        <PriceDisplay price={price} discountPercentage={discountPercentage} />
       </div>
 
-      <Rating rating={rating} ratingCount={ratingCount} />
+      <Rating ratings={rating} />
 
       <p className="text-gray-700 mb-8 text-sm">{description}</p>
 

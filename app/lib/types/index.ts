@@ -21,6 +21,7 @@ export type Product = {
   returnPolicy: string;
   thumbnail: string;
   discountPercentage: number;
+  stock: number;
 };
 
 export type ProductListResponse = {
